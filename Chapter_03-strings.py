@@ -1,14 +1,26 @@
-#using single quotes, double quotes and tripple quotes
+# It can be done using single '' double "" and triple ''' ''' quotes
 
-print('hello')
-print('hello')
-print('''hello''')
+print('Hello World1')
+print("Hello World2")
+print('''Hello World3''')
 
-#Multiline strings 
+#MultiLine strings      
 
-#1. using tripple quotes
-x = ''' i am learning python for 
-Artificial intelligence, machine learning, 
-deep learning, data analysis and for data scientist.
-'''
+#1. using single triple quotes
+
+x= '''I'm learning python for Artificial Intelligence,machine learning,deep learning,data analysis and for data scientist'''
+
 print(x)
+
+#2. using double triple quotes
+
+x= """I'm learning python for Artificial Intelligence,machine learning,deep learning,data analysis and for data scientist"""
+
+print(x)
+
+
+#strings are arrays
+
+a="hello,world"
+
+print(a[0])
