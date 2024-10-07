@@ -43,3 +43,10 @@ ar
 after_label_ar = pd.DataFrame(ar, columns=["Gender_Female", "Gender_Male"])
 after_label_ar
 
+ds["Property_Area"].unique()
+
+ds["Property_Area"].isnull().sum()
+
+from sklearn.preprocessing import LabelEncoder
+
+ibl =LabelEncoder()
