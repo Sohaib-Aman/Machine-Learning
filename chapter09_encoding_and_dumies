@@ -1,0 +1,45 @@
+import pandas as pd
+
+ds=pd.read_csv('loan.csv')
+
+ds
+
+ds.head()
+
+ds.isnull().sum()
+
+ds["Gender"].mode()[0]
+
+ds['Gender'].fillna(ds["Gender"].mode()[0],inplace=True)
+
+ds.isnull().sum()
+
+cds=ds.copy()
+
+dumies=pd.get_dummies(cds["Gender"],prefix='Gender_')
+  
+dumies
+
+dumies=dumies.astype(int)
+
+dumies
+
+dp
+
+dp = pd.concat([cds,dumies], axis=1)
+
+dp
+
+new_data=ds.copy()
+
+from sklearn.preprocessing import OneHotEncoder
+
+ohe=OneHotEncoder()
+
+ar=ohe.fit_transform([new_data["Gender"]]).toarray()
+
+ar
+
+after_label_ar = pd.DataFrame(ar, columns=["Gender_Female", "Gender_Male"])
+after_label_ar
+
