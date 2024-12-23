@@ -1,0 +1,48 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 5
+struct graphNode
+{
+	int data;
+	struct graphNode *next;	
+};
+int vertex_list[MAX] = {1,2,3,4,5};
+struct graphNode *arr[MAX];
+
+struct graphNode *createList(int vertex)
+{
+	struct graphNode *r;
+	int data;
+	printf("Vertex %d connected to:", vertex);
+	scanf("%d", &data);
+	if(data == -1)
+	{
+		return NULL;
+	}
+	r = (struct graphNode *)malloc(sizeof(struct graphNode));
+	r->data = data;
+	r->next = createList(vertex);
+	return r;
+}
+int main()
+{
+	// creating Grpah using Linkded list
+	int i;
+	for(i=0;i<MAX;i++)
+	{
+		arr[i] = createList(vertex_list[i]);
+	}
+	
+	// displaying adjacent of each node
+	for(i=0; i<MAX;i++)
+	{
+		printf("\n Adjacent of %d \n", vertex_list[i]);
+		struct graphNode *temp = arr[i];
+		while(temp != NULL)
+		{
+			printf("\t%d", temp->data);
+			temp = temp->next;
+		}
+	}
+	
+}
