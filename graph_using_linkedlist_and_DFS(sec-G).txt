@@ -1,0 +1,134 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 5
+struct graphNode
+{
+	int data;
+	struct graphNode *next;	
+};
+int vertex_list[MAX] = {1,2,3,4,5};
+struct graphNode *arr[MAX];
+int visited_list[MAX];
+int stack[MAX];
+int top = -1;
+
+struct graphNode *createList(int vertex)
+{
+	struct graphNode *r;
+	int data;
+	printf("Vertex %d connected to:", vertex);
+	scanf("%d", &data);
+	if(data == -1)
+	{
+		return NULL;
+	}
+	r = (struct graphNode *)malloc(sizeof(struct graphNode));
+	r->data = data;
+	r->next = createList(vertex);
+	return r;
+}
+void push(int data)
+{
+    if(top == MAX-1)
+    {
+        printf("stack is full.");
+        return;
+    }
+    top++;
+    stack[top] = data;
+}
+void pop()
+{
+    if(top == -1)
+    {
+        printf("stack is empty");
+        return;
+    }
+    stack[top] = 0;
+    top--;
+}
+int find_index(int cwv)
+{
+    int i;
+    for(i=0;i<MAX;i++)
+    {
+        if(vertex_list[i] == cwv)
+        {
+            return i;
+        }
+    }
+}
+void DFS(int cwv)
+{
+    // Rule 01
+    int vli = 0;
+    visited_list[vli] = cwv;
+    push(cwv);
+    printf("\t%d", cwv);
+    int index = find_index(cwv); // 0
+    struct graphNode *adjacent = arr[index]; // 1001
+    
+    // Rule 02
+    while(top != -1)
+    {
+        while(adjacent != NULL)
+        {
+            int i;
+            int flag = 0;
+            // adacent node is visited or not
+            for(i=0; i<MAX; i++)
+            {
+                if(visited_list[i] == adjacent->data )
+                {
+                    flag = 1;
+                }
+            }
+            if(flag == 0)
+            {
+                vli++;
+                visited_list[vli] = adjacent->data;
+                push(adjacent->data);
+                printf("\t%d", adjacent->data);
+                cwv = stack[top];
+                index = find_index(cwv); // 0
+                adjacent = arr[index]; // 1001
+            }
+            else
+            {
+                adjacent = adjacent->next;
+            }
+        }
+        pop();
+        cwv = stack[top];
+        index = find_index(cwv); // 0
+        adjacent = arr[index]; // 1001
+        
+    }
+    
+}
+int main()
+{
+	// creating Grpah using Linkded list
+	int i;
+	for(i=0;i<MAX;i++)
+	{
+		arr[i] = createList(vertex_list[i]);
+	}
+	
+	// displaying adjacent of each node
+	for(i=0; i<MAX;i++)
+	{
+		printf("\n Adjacent of %d \n", vertex_list[i]);
+		struct graphNode *temp = arr[i];
+		while(temp != NULL)
+		{
+			printf("\t%d", temp->data);
+			temp = temp->next;
+		}
+	}
+	// applying BFS
+	//int start_vertex = vertex_list([0]);
+	printf("\n ================  BFS  ================ \n");
+	DFS(5);
+	return 0;
+}
