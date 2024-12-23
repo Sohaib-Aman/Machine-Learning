@@ -1,0 +1,119 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 5
+struct graphNode
+{
+	int data;
+	struct graphNode *next;	
+};
+int vertex_list[MAX] = {1,2,3,4,5};
+struct graphNode *arr[MAX];
+int degree[MAX];
+
+struct graphNode *createList(int vertex)
+{
+	struct graphNode *r;
+	int data;
+	printf("Vertex %d connected to:", vertex);
+	scanf("%d", &data);
+	if(data == -1)
+	{
+		return NULL;
+	}
+	r = (struct graphNode *)malloc(sizeof(struct graphNode));
+	r->data = data;
+	r->next = createList(vertex);
+	return r;
+}
+int find_index(int cwv)
+{
+    int i;
+    for(i=0;i<MAX;i++)
+    {
+        if(vertex_list[i] == cwv)
+        {
+            return i;
+        }
+    }
+}
+int find_degree(int vertex) // 1
+{
+    int index = find_index(vertex); // 0
+    struct graphNode* adjacent = arr[index]; // 1001
+    int degree = 0;
+    while(adjacent != NULL)
+    {
+        degree++; // 3
+        adjacent = adjacent->next; // NULL
+    }
+    return degree;
+}
+void HST()
+{
+    // Step 1: find degrees of all vertices
+    int i;
+    for(i=0; i<MAX; i++)
+    {
+        degree[i] = find_degree(vertex_list[i]); // 1  // 3
+    }
+    // step 2: display all degrees and calculate sum of degrees
+    int sum_of_degrees = 0;
+    for(i=0;i<MAX;i++)
+    {
+        printf("\n degree(%d) = %d",vertex_list[i], degree[i]);
+        sum_of_degrees = sum_of_degrees + degree[i];
+    }
+    printf("\n sum of degrees = %d", sum_of_degrees);
+    
+    // step 3: Total Edges in graph
+    int vertex_index;
+    struct graphNode* adjacent;
+    int adjacent_index;
+    int total_edges =0;
+    for(i=0; i<MAX;i++)
+    {
+        vertex_index = find_index(vertex_list[i]);
+        adjacent = arr[vertex_index];
+        while(adjacent != NULL)
+        {
+            adjacent_index = find_index(adjacent->data);
+            if( adjacent_index > vertex_index)
+            {
+                total_edges++;
+            }
+            adjacent = adjacent->next;
+        }
+    }
+    printf("\n Total Edges in graph= %d", total_edges);
+    
+    // apply Theorem
+    if(sum_of_degrees == 2*total_edges)
+    {
+        printf("\n Handshaking Theorem prooved.");
+    }
+}
+int main()
+{
+	// creating Grpah using Linkded list
+	int i;
+	for(i=0;i<MAX;i++)
+	{
+		arr[i] = createList(vertex_list[i]);
+	}
+	
+	// displaying adjacent of each node
+	for(i=0; i<MAX;i++)
+	{
+		printf("\n Adjacent of %d \n", vertex_list[i]);
+		struct graphNode *temp = arr[i];
+		while(temp != NULL)
+		{
+			printf("\t%d", temp->data);
+			temp = temp->next;
+		}
+	}
+	// applying Handshaking Theorem
+	//int start_vertex = vertex_list([0]);
+	HST();
+	return 0;
+}
